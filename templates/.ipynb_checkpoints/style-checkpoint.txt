@@ -1,0 +1,26 @@
+/* Ziyarətçi məlumatlarının dizaynı */
+.visitor-info {
+    display: none;
+    background-color: #2e2e2e;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    color: #00ff00; /* Neofetch-ə uyğun rəng */
+    font-size: 12px; /* Neofetch-ə uyğun ölçü */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Arxa fon animasiyası */
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(90deg, #000, #111, #000);
+    background-size: 200% 200%;
+    animation: bgAnimation 5s infinite;
+    color: #00ff00;
+}
+
+@keyframes bgAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

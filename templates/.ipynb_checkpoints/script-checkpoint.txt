@@ -1,0 +1,68 @@
+// Dinozavr animasiyası
+const canvas = document.createElement("canvas");
+canvas.id = "gameCanvas";
+canvas.width = 800;
+canvas.height = 200;
+canvas.style.position = "fixed";
+canvas.style.top = "0";
+canvas.style.left = "0";
+canvas.style.zIndex = "5";
+document.body.appendChild(canvas);
+
+const ctx = canvas.getContext("2d");
+
+let dino = { x: 50, y: 150, width: 40, height: 40, dy: 0, gravity: 0.6, jump: -10 };
+let cacti = [];
+let frame = 0;
+
+function drawDino() {
+    ctx.fillStyle = "#00ff00";
+    ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+}
+
+function drawCacti() {
+    ctx.fillStyle = "#ff0000";
+    cacti.forEach((cactus) => {
+        ctx.fillRect(cactus.x, cactus.y, cactus.width, cactus.height);
+    });
+}
+
+function updateGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Dinozavr tullanma fizikası
+    dino.y += dino.dy;
+    dino.dy += dino.gravity;
+    if (dino.y > 150) {
+        dino.y = 150;
+        dino.dy = 0;
+    }
+
+    // Kaktusların hərəkəti
+    cacti.forEach((cactus, index) => {
+        cactus.x -= 4;
+        if (cactus.x + cactus.width < 0) {
+            cacti.splice(index, 1);
+        }
+    });
+
+    // Yeni kaktus yaratma
+    if (frame % 120 === 0) {
+        cacti.push({ x: canvas.width, y: 150, width: 20, height: 40 });
+    }
+
+    drawDino();
+    drawCacti();
+    frame++;
+    requestAnimationFrame(updateGame);
+}
+
+// Dinozavr tullanma
+window.addEventListener("keydown", (e) => {
+    if (e.code === "Space" && dino.y === 150) {
+        dino.dy = dino.jump;
+    }
+});
+
+// Oyunu başladır
+updateGame();

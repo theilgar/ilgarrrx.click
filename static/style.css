@@ -1,0 +1,117 @@
+/* Ümumi Stil */
+body {
+    font-family: 'Roboto Mono', monospace;
+    background: #222;
+    color: #00ff00;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Əsas konteyner */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    flex: 1;
+}
+
+/* Sayğac Bölməsi */
+.counters {
+    background-color: #111;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    color: #00ff00;
+    font-size: 12px;
+}
+
+/* Bölmələr */
+.section {
+    background-color: #2e2e2e;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Neofetch Məlumatları */
+pre {
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Ziyarətçi Məlumatları */
+.visitor-log {
+    display: flex;
+    font-size: 10px;
+    align-items: left;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-bottom: 1px solid #444;
+}
+
+/* Butonlar */
+.contact-btn, .expand-btn {
+    background-color: #00ff00;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/*
+.contact-btn:hover, .expand-btn:hover {
+    background-color: #008000;
+}
+*/
+
+/* Əlavə Məlumat */
+.extra-info {
+    width: 100%;
+    font-size: 12px;
+    display: none;
+}
+
+/* Yenilənmiş IP və cihaz məlumatlarının stili */
+.time {
+    color: orange;
+    font-weight: bold;
+}
+
+.device {
+    color: yellow;
+    font-weight: bold;
+}
+
+.ip {
+    color: cyan;
+    font-weight: bold;
+}
+
+/* Müəllif animasiyası */
+#author-text {
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #00ff00;
+    font-size: 16px;
+    font-family: 'Roboto Mono', monospace;
+    white-space: nowrap;
+    animation: glow 1.5s infinite alternate;
+}
+
+/* Neon Glow Effekti */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #008000;
+    }
+    to {
+        text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #008000;
+    }
+}
