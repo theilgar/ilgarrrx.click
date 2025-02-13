@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Bedrock Server İdarəetməsi</title>
+    <!-- Xarici CSS faylına keçid -->
+    <link rel="stylesheet" href="{{ url_for('admin.static', filename='style2.css') }}">
+</head>
+<body>
+    <h1>Bedrock Server İdarəetməsi</h1>
+    <p>Status: {% if status %} <span class="running">Çalışır</span> {% else %} <span class="stopped">Dayandırılıb</span> {% endif %}</p>
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+    <form method="post">
+        <button type="submit" name="action" value="start">Start Server</button>
+        <button type="submit" name="action" value="stop">Stop Server</button>
+        <button type="submit" name="action" value="restart">Restart Server</button>
+    </form>
+    <hr>
+    <h2>Əmr göndər</h2>
+    <form method="post">
+        <input type="text" name="command" placeholder="Əmr daxil edin" required>
+        <button type="submit" name="action" value="send_command">Əmr Göndər</button>
+    </form>
+    
+    <!-- Terminal CLI çıxışını göstərən hissə -->
+    <h2>Terminal Çıxışı</h2>
+    <pre id="terminal-output">{{ cli_output }}</pre>
+
+    <p><a href="{{ url_for('admin.admin_login') }}">Admin Panelinə Geri Qayıt</a></p>
+    <script>
+    function updateTerminal() {
+        fetch('{{ url_for("admin.terminal_output_api") }}')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('terminal-output').innerText = data.output;
+            })
+            .catch(error => console.error("Terminal yenilənmədi:", error));
+    }
+    // Hər 500ms-də terminal çıxışını yenilə
+    setInterval(updateTerminal, 500);
+</script>
+</body>
+</html>

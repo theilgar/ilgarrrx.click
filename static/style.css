@@ -2,79 +2,157 @@
 body {
     font-family: 'Roboto Mono', monospace;
     background: #222;
-    color: #00ff00;
+    color: #ffffff;
+    font-size: 10px;
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+}
+
+
+.background {
+    position: fixed; /* Saytın ölçüsü boyda olması üçün */
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#gradient-canvas {
+    --gradient-color-1: #8000FF;
+    --gradient-color-2: #FF0000;
+    --gradient-color-3: #FF0000;
+    --gradient-color-4: #8000FF;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    
+    background: linear-gradient(
+        to bottom,
+        var(--gradient-color-1),
+        var(--gradient-color-2),
+        var(--gradient-color-3),
+        var(--gradient-color-4)
+    );
+
+    /* Aşağıya doğru bulanıqlaşma effekti */
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* Əsas konteyner */
 .container {
-    max-width: 800px;
-    margin: auto;
+    position: relative;
+    backdrop-filter: blur(50px);
+    filter: drop-shadow(5px 5px 20px rgba(0, 0, 0, 0.3));
+    border-radius: 12px;
     padding: 20px;
-    flex: 1;
+    margin: 20px;
+    overflow: hidden;
 }
 
+/* Tünd overlay */
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.50); /* 26% tündləşdirmə */
+    border-radius: inherit; /* Ana div-in radiusunu qorumaq üçün */
+    z-index: -1; /* Overlay-i arxa plana göndərmək */
+}
+
+/* Sayt haqqında */
+.siteinfo {
+    text-align: center;
+}
+
+a {
+    color: #00ff00;
+}
 /* Sayğac Bölməsi */
 .counters {
-    background-color: #111;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: left;
     color: #00ff00;
-    font-size: 12px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 /* Bölmələr */
 .section {
-    background-color: #2e2e2e;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
 }
 
 /* Neofetch Məlumatları */
 pre {
-    font-size: 12px;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
 
-/* Ziyarətçi Məlumatları */
-.visitor-log {
-    display: flex;
-    font-size: 10px;
-    align-items: left;
-    justify-content: space-between;
+button {
+    background-color: #00ff00; /* Neon yaşıl (footer yazısı ilə eyni) */
+    color: #000000; /* Qara yazı */
+    border: none;
     padding: 5px 10px;
-    border-bottom: 1px solid #444;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.3s;
 }
 
-/* Butonlar */
-.contact-btn, .expand-btn {
+button:hover {
+    background-color: #008000; /* Hover effekti üçün tünd yaşıl */
+}
+
+/* + düyməsi üçün animasiyalı effekt */
+.toggle-btn {
     background-color: #00ff00;
-    color: #000;
+    color: black;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    font-size: 12px;
-    border-radius: 5px;
-    margin-top: 5px;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-/*
-.contact-btn:hover, .expand-btn:hover {
+.toggle-btn:hover {
     background-color: #008000;
+    transform: scale(1.1);
 }
-*/
 
-/* Əlavə Məlumat */
-.extra-info {
-    width: 100%;
-    font-size: 12px;
+.toggle-btn:active {
+    transform: scale(0.9);
+}
+
+.details-row {
     display: none;
+}
+
+/* Axtarış Qutusu */
+.search-box {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#search-input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #00ff00;
+    background-color: black;
+    color: #00ff00;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 12px;
+    outline: none;
+}
+
+#search-input::placeholder {
+    color: #00ff00;
+    opacity: 0.7;
 }
 
 /* Yenilənmiş IP və cihaz məlumatlarının stili */
@@ -88,20 +166,12 @@ pre {
     font-weight: bold;
 }
 
-.ip {
-    color: cyan;
-    font-weight: bold;
-}
 
 /* Müəllif animasiyası */
 #author-text {
-    background: rgba(0, 0, 0, 0.8);
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 5px;
+    height: 20px;
     color: #00ff00;
-    font-size: 16px;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'VCR OSD Mono', sans-serif;
     white-space: nowrap;
     animation: glow 1.5s infinite alternate;
 }
@@ -114,4 +184,18 @@ pre {
     to {
         text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #008000;
     }
+}
+
+/* Kursor Animasiyası */
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.cursor {
+    display: inline-block;
+    width: 5px;
+    height: 12px;
+    background-color: #00ff00;
+    margin-left: 5px;
+    animation: blink 0.8s infinite;
 }

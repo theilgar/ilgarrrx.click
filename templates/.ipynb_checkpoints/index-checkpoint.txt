@@ -5,60 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ilgarrrx serverinin sistem məlumatları</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="backround">
+        <canvas id="gradient-canvas"></canvas>
+    </div>
     <div class="container">
+        <div class="siteinfo">
+            <h3>Sayt Haqqında Məlumat</h3>
+            <p>Sayt <a href="https://www.instagram.com/ilgarrrx">@ilgarrrx</a> tərəfindən idarə və host edilir :)</p>
+            <p>Hal hazırda sayt Test məqsədi üçün istifadə olunur</p>
+            <p>Gələcək lahiyə və yeniliklərdən xəbərdar olmağ üçün <a href="https://github.com/theilgar">Github</a> profilimə keçid edin</p>
+        </div>
+
         <div class="counters">
+            <p>Sənin IPv4: {{ user_ip }}</p>
             <p>Ümumi Ziyarətçi Sayı: <span id="total_visits">{{ total_visits }}</span></p>
             <p>Online Ziyarətçilər: <span id="online_count">{{ online_count }}</span></p>
-            <p>Mənim IP Adresim: 
-                <span id="my_ip">
-                    {% if user_ip_v4 and user_ip_v6 %}
-                        {{ user_ip_v4 }} / {{ user_ip_v6 }}
-                    {% elif user_ip_v4 %}
-                        {{ user_ip_v4 }}
-                    {% elif user_ip_v6 %}
-                        {{ user_ip_v6 }}
-               {% else %}
-                Bilinmir
-            {% endif %}
-        </span>
-    </p>
-</div>
+            <button onclick="toggleVisitorLogs()">Ziyarətçi Məlumatları</button>
+        </div>
 
         <div class="section">
             <h2>Neofetch Məlumatları:</h2>
             <pre id="neofetch_output"></pre>
+            <footer>
+                <p id="author-text"></p>
+            </footer>
         </div>
 
-        <button class="toggle-btn contact-btn" onclick="toggleVisitorInfo()">Ziyarətçi Məlumatlarını Göstər</button>
-        <a href="https://www.instagram.com/ilgarrrx" target="_blank" class="contact-btn">Instagram</a>
-
-        <div class="section visitor-info" id="visitor-section" style="display: none;">
-            {% for ip_index, (ip, logs) in enumerate(visitor_logs.items(), start=1) %}
-                <div class="visitor-log">
-                    <span class="ip"><strong>{{ ip_index }}.</strong> {{ ip }} ({{ logs|length }} giriş, Son giriş: {{ logs[0].visit_time }})</span>
-                    <button class="expand-btn contact-btn" onclick="toggleDetails('{{ ip }}')">+</button>
+        <div class="section">
+            <div id="visitor-logs" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="search-input" onkeyup="searchVisitorLogs()" placeholder="Axtarış et...">
                 </div>
-                <div class="extra-info" id="details-{{ ip }}" style="display: none;">
-                    {% for log in logs %}
-                    <p>
-                        <span class="device"><strong>Cihaz:</strong> {{ log.user_agent }}</span><br>
-                        <span class="time"><strong>Ziyarət Vaxtı:</strong> {{ log.visit_time }}</span>
-                    </p>
-                    {% endfor %}
-                </div>
-                <hr>
-            {% endfor %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>IP Ünvanı</th>
+                            <th>Giriş Sayı</th>
+                            <th>Son Giriş Tarixi</th>
+                            <th>+</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index, (ip, logs) in enumerate(visitor_logs.items(), start=1) %}
+                        <!-- Summary Row -->
+                        <tr id="summary-{{ index }}" class="visitor-summary">
+                            <td>{{ index }}</td>
+                            <td>{{ ip }}</td>
+                            <td>{{ logs|length }}</td>
+                            <td>{{ logs[0].visit_time }}</td>
+                            <td>
+                                <button class="toggle-btn" onclick="toggleDetails('details-{{ index }}')">+</button>
+                            </td>
+                        </tr>
+                        <!-- Details Row -->
+                        <tr id="details-{{ index }}" class="details-row visitor-details" style="display: none;">
+                            <td colspan="5">
+                                {% for log in logs %}
+                                    <b class="time">Giriş Tarixi:</b> {{ log.visit_time }}<br>
+                                    <b class="device">İstifadəçi Agent:</b> {{ log.user_agent }}<br>
+                                    <hr>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <p id="author-text"></p>
-    </footer>
-
+    <!-- Script faylları -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='backround.js') }}"></script>
+    <script src="{{ url_for('static', filename='footer.js') }}"></script>
 </body>
 </html>

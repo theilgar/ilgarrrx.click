@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Paneli</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #222; color: #fff; padding: 20px; }
+        button { padding: 5px 10px; background: #00ff00; color: #000; border: none; cursor: pointer; margin: 5px; }
+        a { color: #00ff00; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Admin Paneli</h1>
+    <p>Bu, admin panelidir. Burada müxtəlif admin funksiyaları yerləşə bilər.</p>
+    <p>
+        <a href="{{ url_for('admin.logout') }}">Çıxış et</a>
+    </p>
+    <!-- Aşağıdakı düyməni əlavə edin -->
+    <p>
+        <button onclick="window.location.href='/admin/bedrock'">
+            Bedrock Server İdarəetməsi
+        </button>
+    </p>
+</body>
+</html>

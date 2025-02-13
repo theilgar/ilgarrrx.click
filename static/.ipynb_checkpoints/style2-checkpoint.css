@@ -1,0 +1,65 @@
+/* Ümumi Stil */
+body {
+    font-family: 'Roboto Mono', monospace;
+    background: #222;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: left;
+    padding: 20px;
+}
+
+/* Server Status Stil */
+.running {
+    color: lightgreen;
+}
+
+.stopped {
+    color: red;
+}
+
+/* Button Stil */
+button {
+    background-color: #00ff00;
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #008000;
+    transform: scale(1.05);
+}
+
+/* Input Text Stil */
+input[type="text"] {
+    padding: 5px;
+    width: 300px;
+    border: 1px solid #00ff00;
+    background-color: black;
+    color: #00ff00;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Link Stil */
+a {
+    color: #00ff00;
+    text-decoration: none;
+}
+
+/* Terminal CLI Çıxışı */
+#terminal-output {
+    background: black;
+    color: #00ff00;
+    padding: 10px;
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #00ff00;
+    margin-top: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}

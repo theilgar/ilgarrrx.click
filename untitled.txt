@@ -1,0 +1,59 @@
+import os
+import hashlib
+from flask import Blueprint, request, render_template, redirect, url_for, session, flash
+
+admin_bp = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
+
+CREDENTIALS_FILE = 'admin_credentials.txt'
+
+def save_credentials(username, password):
+    """Verilmiş istifadəçi adı və şifrəni hash‑ləyib faylda saxlayır."""
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    with open(CREDENTIALS_FILE, 'w') as f:
+        f.write(f"{username}\n{hashed_password}\n")
+
+def load_credentials():
+    if not os.path.exists(CREDENTIALS_FILE):
+        return None, None
+    with open(CREDENTIALS_FILE, 'r') as f:
+        lines = f.readlines()
+        if len(lines) >= 2:
+            username = lines[0].strip()
+            hashed_password = lines[1].strip()
+            return username, hashed_password
+    return None, None
+
+@admin_bp.route('/', methods=['GET', 'POST'])
+def admin_login():
+    # Əgər artıq admin daxil olubsa, admin panelini göstəririk.
+    if session.get('admin_logged_in'):
+        return render_template('admin.html')
+
+    credentials_exist = os.path.exists(CREDENTIALS_FILE)
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # Əgər kredensiallar təyin olunmayıbsa, onları təyin edirik.
+        if not credentials_exist:
+            save_credentials(username, password)
+            session['admin_logged_in'] = True
+            flash("Admin kredensialları təyin olundu və giriş uğurlu oldu!", "success")
+            return redirect(url_for('admin.admin_login'))
+        else:
+            stored_username, stored_hashed = load_credentials()
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            if username == stored_username and hashed_password == stored_hashed:
+                session['admin_logged_in'] = True
+                flash("Giriş uğurlu oldu!", "success")
+                return redirect(url_for('admin.admin_login'))
+            else:
+                flash("Səhv kredensiallar!", "danger")
+    
+    return render_template('admin_login.html', credentials_exist=credentials_exist)
+
+@admin_bp.route('/logout')
+def logout():
+    session.pop('admin_logged_in', None)
+    flash("Çıxış edildi.", "info")
+    return redirect(url_for('admin.admin_login'))
